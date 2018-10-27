@@ -1,0 +1,81 @@
+:root {
+    font-family: 'Signika', sans-serif;
+    font-size: 18px;
+}
+
+body {
+    overflow-y: hidden;
+    background-color:#4682B4;
+}
+
+canvas {
+    margin: 80px 120px;
+}
+
+#controller {
+    background-color: white;
+    position: fixed;
+    left: 680px;
+    top: 30px;
+    height: 500px;
+    width: 400px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#controller header {
+    height: 10%;
+    width:100%;
+    /* border-radius: 10px; */
+}
+
+.toggle-view {
+    float: left;
+    height: 100%;
+    width: 25%;
+    border-bottom: 1px solid gainsboro;
+    border-right: 1px solid gainsboro;
+}
+
+.toggle-view.on {
+    border-bottom: 1px solid gainsboro;
+    background-color:gainsboro;
+}
+
+#controller header :first-child {
+    border-radius: 10px 0px 0px 0px; 
+}
+
+#controller header :last-child {
+    border-radius: 0px 10px 0px 0px; 
+    border-right: 0px solid white;
+    width: 24.2%;
+}
+
+.toggle-view .content {
+    margin: 10%;
+}
+
+header:last-child {
+    border-right: 0px solid white;
+}
+
+.view {
+    height:90%;
+    background-color: gainsboro;
+    border: 1px solid gainsboro;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.option {
+    margin:15px 13%;
+}
+
+.option input {
+    position: absolute;
+    left: 190px;
+}
+
+.option .input
+
+.option .checkList
