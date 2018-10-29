@@ -8,7 +8,7 @@ function makeClassifiedDiv(className) {
     return div;
 }
 
-function generateInputOption (inputName) {
+export function generateInputOption (inputName) {
     let option = makeClassifiedDiv("option");
     option.classList.add("input-option");
     let label = document.createElement("label");
@@ -22,7 +22,7 @@ function generateInputOption (inputName) {
 
 }
 
-function generateCheckOption (checkName) {
+export function generateCheckOption (checkName) {
     let check = makeClassifiedDiv("option");
     check.classList.add("check-option");
     let label = document.createElement("label");
@@ -35,7 +35,7 @@ function generateCheckOption (checkName) {
     return check;
 }
 
-function submitButton(innerText) {
+export function submitButton(innerText) {
     let button = document.createElement("button");
     button.setAttribute("type", "submit");
     button.innerText = innerText;

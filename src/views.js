@@ -1,10 +1,13 @@
-var ControllerView = {
+import * as Generators from "./html_generators";
+// I will need to make changes above accordingly
+
+export var ControllerView = {
     __init__: function(name, inputOptions, checkOptions) {
         this.name = name;
         // Eventually have the fillView create the container and shit
         this.hook = document.querySelector("#" + name);
         this.fillView(inputOptions, checkOptions);
-        this.submitHook = this.findSubmitHook(this.hook);
+        this.formHook = this.findFormHook(this.hook);
         this.visibilityHook = this.findVisibilityHook(this.hook);
         this.headerHook =document.querySelector("#header-" + name); 
     },
@@ -15,46 +18,32 @@ var ControllerView = {
         else {
             this.hook.style.display = "none";
         }
+        this.headerHook.classList.toggle("on");
     },
     findVisibilityHook: function(viewHook) {
         // view - form - option div - label - input
         return viewHook.children[0].children[0].children[0].children[0];
     },
-    findSubmitHook: function(viewHook) {
+    findFormHook: function(viewHook) {
         // view - form - submit (lastchild)
-        return viewHook.children[0].lastElementChild;
+        return viewHook.lastElementChild;
     },
     fillView(inputNames, checkNames) {
         let container = this.hook;
         let form = document.createElement("form");
         form.setAttribute("name", this.name);
-        form.appendChild(generateCheckOption("visibility"));
+        form.appendChild(Generators.generateCheckOption("visibility"));
         // Maybe put a seperation
         inputNames.forEach(inputName => {
-            form.appendChild(generateInputOption(inputName));
+            form.appendChild(Generators.generateInputOption(inputName));
         });
         checkNames.forEach(checkName => {
-            form.appendChild(generateCheckOption(checkName))
+            form.appendChild(Generators.generateCheckOption(checkName))
         })
-        form.appendChild(submitButton("Apply!"));
+        form.appendChild(Generators.submitButton("Apply!"));
         container.appendChild(form);
     }
 }
-
-// the views need to be initialized after the html is constructed (will be in fill_views page)
-var LeftOptionsView = Object.create(ControllerView);
-var TopOptionsView = Object.create(ControllerView);
-var RightOptionsView = Object.create(ControllerView);
-var BottomOptionsView = Object.create(ControllerView);
-
-// TODO: Eventually pull this from json
-let leftInputOptions = ["trunkLength", "complexity"];
-let leftCheckOptions = ["visible", "random"];
-
-LeftOptionsView.__init__("left", leftInputOptions, leftCheckOptions);
-TopOptionsView.__init__("top", [], []);
-RightOptionsView.__init__("right", [], []);
-BottomOptionsView.__init__("bottom", [], []);
 
 // ===================
 // Legacy Code

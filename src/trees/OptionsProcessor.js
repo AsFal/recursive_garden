@@ -1,6 +1,6 @@
-var OptionsProcessor = {
-    analyse: function(options) {
-
+export var OptionsProcessor = {
+    analyse: function(sk, options) {
+        this.sk = sk;
         this.processedOptions = {};
         // Will set a default starter angle and root position if specified
         let direction = this.setDefaultDirection(options.name); /**\ */ //default root is set inside the function
@@ -16,8 +16,8 @@ var OptionsProcessor = {
             options.trunkLength = 100;
 
         // Create the initial displacement (only useful thing) 
-        this.processedOptions.displacement = createVector(options.trunkLength,0); /**\ */
-        this.processedOptions.displacement.rotate(radians(options.direction));
+        this.processedOptions.displacement = this.sk.createVector(options.trunkLength,0); /**\ */
+        this.processedOptions.displacement.rotate(sk.radians(direction));
 
         if(!options.complexity)
             options.complexity = 0
@@ -43,19 +43,19 @@ var OptionsProcessor = {
     setDefaultDirection: function(defaultName){
         switch (defaultName) {
             case "left":
-                this.processedOptions.root = createVector(0, height-height/2);
+                this.processedOptions.root = this.sk.createVector(0, this.sk.height-this.sk.height/2);
                 return 0;            
             case "top":
-                this.processedOptions.root = createVector(width-width/2, 0);
+                this.processedOptions.root = this.sk.createVector(this.sk.width-this.sk.width/2, 0);
                 return 90;
             case "right":
-                this.processedOptions.root = createVector(width, height-height/2);
+                this.processedOptions.root = this.sk.createVector(this.sk.width, this.sk.height-this.sk.height/2);
                 return 180;
             case "bottom":
-                this.processedOptions.root = createVector(width-width/2, height);
+                this.processedOptions.root = this.sk.createVector(this.sk.width-this.sk.width/2, this.sk.height);
                 return -90;
             default:
-                this.processedOptions.root = createVector(width-width/2, height);
+                this.processedOptions.root = this.sk.createVector(this.sk.width-this.sk.width/2, this.sk.height);
                 return -90;
         }
     }
