@@ -34,7 +34,7 @@ export var Forest = {
     },
     // Needs to be modified
     updateTree: function(newOptions) {
-        if(trees.length > treeIndex && treeIndex > 0)
+        if(this.trees[newOptions.name])
             this.trees[newOptions.name].__init__(this.sk, newOptions);
         else
             logRed("No Tree has been found, tree is not in range");

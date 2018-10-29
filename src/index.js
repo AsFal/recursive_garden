@@ -11,13 +11,13 @@ var RightOptionsView = Object.create(ControllerView);
 var BottomOptionsView = Object.create(ControllerView);
 
 // TODO: Eventually pull this from json
-let leftInputOptions = ["trunkLength", "complexity"];
-let leftCheckOptions = ["visible", "random"];
+let inputOptions = ["trunkLength", "complexity"];
+let checkOptions = ["random"];
 
-LeftOptionsView.__init__("left", leftInputOptions, leftCheckOptions);
-TopOptionsView.__init__("top", [], []);
-RightOptionsView.__init__("right", [], []);
-BottomOptionsView.__init__("bottom", [], []);
+LeftOptionsView.__init__("left", inputOptions, checkOptions);
+TopOptionsView.__init__("top", inputOptions, checkOptions);
+RightOptionsView.__init__("right", inputOptions, checkOptions);
+BottomOptionsView.__init__("bottom", inputOptions, checkOptions);
 
 // Init the Model
 
@@ -49,22 +49,24 @@ views.forEach((view)=>{
       event.stopPropagation();
       let form = findParentForm(event.target);
       let newOptions = makeOptionsFromForm(form);
-      Model.forest.updateTree(newOptions);
+      Model.canvasObject.updateTree(newOptions);
         //Find the index from the name, or put the information in the html (most likely in the button)
     })
     
     view.visibilityHook.addEventListener("click", function(event){
         let form = findParentForm(event.target);
         let name = form.name;
-        let options = makeOptionFromForm(form);
+        let options = makeOptionsFromForm(form);
         console.log(options);
-        if(Model.forest.containsTree(name)) {
-            Model.forest.removeTree(options);
+        console.log(Model);
+        console.log(Model.canvasObject);
+        if(Model.canvasObject.containsTree(name)) {
+            Model.canvasObject.removeTree(options);
             logRed("shit is being deleted")
         }
         else {
 
-            Model.forest.addTree(options)
+            Model.canvasObject.addTree(options)
             logRed("shit is being added");
         }
         // let index = Number(event.target.index);
@@ -78,7 +80,7 @@ views.forEach((view)=>{
  * */
 // =============================================================
 // This a functional motherfucka
-function makeOptionFromForm(formHook) {
+function makeOptionsFromForm(formHook) {
     // The way I formatted the controller, There should be three types of options
     // option classified divs with text input
     // Option classified divs with check inputs
@@ -88,7 +90,7 @@ function makeOptionFromForm(formHook) {
     options.name = formHook.name;
     [].forEach.call(formHook.children,(child)=>{
         if(child.classList.contains("input-option")) {
-            childInput = findChildInput(child);
+            let childInput = findChildInput(child);
             let value = childInput.value;
             let name  = childInput.name;
             if(Number(value) != NaN)
@@ -96,7 +98,7 @@ function makeOptionFromForm(formHook) {
             options[name]=value;
         }
         else if(child.classList.contains("check-option")) {
-            childInput = findChildInput(child);
+            let childInput = findChildInput(child);
             let name = childInput.name;
             let isChecked = childInput.checked;
             options[name]=isChecked;          
@@ -152,16 +154,6 @@ function findParentForm(inputHook) {
 let s = (sk) => {
    
     sk.setup= function() {
-        logRed("test")
-        let vect = sk.createVector(0,0);
-        console.log(vect);
-        let left = sk.createVector(1,0);
-        let right = sk.createVector(0,1);
-        console.log(left);
-        console.log(right);
-        let added = vect.add.apply(left,right);
-        console.log(added);
-        logRed("test")
 
         sk.createCanvas(400,400);
         let ForestOptions = [
