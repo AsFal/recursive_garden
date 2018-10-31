@@ -2,11 +2,11 @@
 // This is a Branch structure
 export var Branch = {
     // begin and end are p5.js points
-    __init__ : function(sk, begin, end, branchReduction, level=0){
+    __init__ : function(sk, begin, end, branchReduction, branchAngles, level=0){
         this.sk = sk;
         this.begin = begin;
         this.end = end;
-        this.branchOutDirections = [30,-30];
+        this.branchOutDirections = branchAngles;
         this.branchReduction = branchReduction; //(either random or static)
         this.level = level;
         this.final = this.level>7;
@@ -20,12 +20,12 @@ export var Branch = {
         // 
         dir.mult(this.branchReduction());
 
-
+        let previousAngle = 0
         for (let index = 0; index < this.branchOutDirections.length; index++) {
-            let angle = this.branchOutDirections[index];
-            if(index !=0){
-                angle -= this.branchOutDirections[index-1];
-            }
+            let angle = this.branchOutDirections[index]();
+            angle -= previousAngle;
+            previousAngle = angle;
+
             dir.rotate(this.sk.radians(angle));
             let newBranch = Object.create(Branch);
             // The sum of the end plus the displacement vector goes to the new end
@@ -34,7 +34,7 @@ export var Branch = {
             branchEnd.add(this.end);
             branchEnd.add(dir);
 
-            newBranch.__init__(this.sk, branchStart, branchEnd, this.branchReduction, this.level + 1)
+            newBranch.__init__(this.sk, branchStart, branchEnd, this.branchReduction, this.branchOutDirections, this.level + 1)
             newBranches.push(newBranch);
         }
         this.final = true;

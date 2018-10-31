@@ -4,6 +4,14 @@ import {Forest} from "./trees/Forest.js";
 // import {ForestOptions} from "./ForestOptions";
 import * as p5 from 'p5';
 
+
+
+
+
+
+
+
+
 // the views need to be initialized after the html is constructed (will be in fill_views page)
 var LeftOptionsView = Object.create(ControllerView);
 var TopOptionsView = Object.create(ControllerView);
@@ -14,10 +22,20 @@ var BottomOptionsView = Object.create(ControllerView);
 let inputOptions = ["trunkLength", "complexity"];
 let checkOptions = ["random"];
 
+
+let bottomInputOptions = ["trunkLength", "complexity", "numberOfBranches"];
+let bottomCheckOptions = ["random", "branchAngles", "randomBranchAngle", "branchEquality"]
+/**
+ * @todo: We would have here a fetch for a JSON that would get the chosen options for the tree
+ * @todo: We have the Analysis return an object that the Views can take to generate their options
+ * While also creating an associated tree (the default values are also set inside of this)
+ */
+
 LeftOptionsView.__init__("left", inputOptions, checkOptions);
 TopOptionsView.__init__("top", inputOptions, checkOptions);
 RightOptionsView.__init__("right", inputOptions, checkOptions);
-BottomOptionsView.__init__("bottom", inputOptions, checkOptions);
+BottomOptionsView.__init__("bottom", bottomInputOptions, bottomCheckOptions);
+
 
 // Init the Model
 
@@ -27,6 +45,10 @@ Model.__init__(LeftOptionsView, forest);
 
 // Then add the events here by connecting with the model's events
 
+
+/**
+ * @todo: wrap all of this code in a function and import it from other file
+ */
 // Should the Model have a copy of the views and if so why
 views.forEach((view)=>{
     view.headerHook.addEventListener("click", function(){
@@ -49,6 +71,7 @@ views.forEach((view)=>{
       event.stopPropagation();
       let form = findParentForm(event.target);
       let newOptions = makeOptionsFromForm(form);
+      console.log(newOptions);
       Model.canvasObject.updateTree(newOptions);
         //Find the index from the name, or put the information in the html (most likely in the button)
     })

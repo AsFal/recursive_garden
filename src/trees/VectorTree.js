@@ -20,10 +20,24 @@ export var VectorTree = {
 
         // let firstNode = createVector(width-width/2, height-100)
         let trunk  = Object.create(Branch);
-        trunk.__init__(sk, processedOptions.root, firstNode, processedOptions.branchReduction);
-        this.treeArray = [trunk];
+        trunk.__init__(sk, processedOptions.root, firstNode, processedOptions.branchReduction, processedOptions.branchAngles);
+        this.treeArray = [];
+        this.grow(trunk);
         // console.log(this.treeArray);
     },
+    grow: function(branch) {
+        this.treeArray.push(branch);
+        // This is not going to be an efficient version of the function, but it will be functional
+        if(!branch.final) {
+            branch.branchOut().forEach((newBranch)=>{
+                this.grow(newBranch);
+            })
+        }
+    },
+    growByLevel: function(branch) {
+        // So that you can grow a full tree by level
+        // Not too useful right now
+    }, 
     branchOut: function() {
         this.treeArray.forEach((branch)=>{
             if(!branch.final){
